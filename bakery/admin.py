@@ -1,3 +1,16 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Client, Cake
+
+
+class ClientAdmin(admin.ModelAdmin):
+    list_display = ('name', 'phone_number', 'email', 'date')
+    search_fields = ('name', 'email')
+
+class CakeAdmin(admin.ModelAdmin):
+    list_display = ('client', 'cake_name', 'cost')
+    list_filter = ('layers', 'shape', 'topping')
+
+admin.site.register(Client, ClientAdmin)
+admin.site.register(Cake, CakeAdmin)
+
