@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Client, Cake
+from .models import AdvetisementUrl
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -15,3 +16,10 @@ class CakeAdmin(admin.ModelAdmin):
 
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Cake, CakeAdmin)
+
+@admin.register(AdvetisementUrl)
+class AdvetisementUrlAdmin(admin.ModelAdmin):
+    list_display = [
+        'title',
+        'link',
+    ]

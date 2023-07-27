@@ -132,3 +132,21 @@ class Cake(models.Model):
     class Meta:
         verbose_name = 'Торт'
         verbose_name_plural = 'Торты'
+
+class AdvetisementUrl(models.Model):
+    title = models.CharField(
+        'Название',
+        max_length=50,
+    )
+    link = models.CharField(
+        'Адрес',
+        max_length=20,
+    )
+
+    class Meta:
+        verbose_name = 'Рекламная ссылка'
+        verbose_name_plural = 'Рекламные ссылки'
+
+    def __str__(self) -> str:
+        return self.title
+    
