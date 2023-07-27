@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Client, Cake
-from .models import AdvetisementUrl
+from .models import AdvetisementUrl, AdvetisementUrlCount
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -17,9 +17,18 @@ class CakeAdmin(admin.ModelAdmin):
 admin.site.register(Client, ClientAdmin)
 admin.site.register(Cake, CakeAdmin)
 
+
+class AdvetisementUrlCountInline(admin.TabularInline):
+    model = AdvetisementUrlCount
+    extra = 0
+
+
 @admin.register(AdvetisementUrl)
 class AdvetisementUrlAdmin(admin.ModelAdmin):
     list_display = [
         'title',
         'link',
+    ]
+    inlines = [
+        AdvetisementUrlCountInline,
     ]

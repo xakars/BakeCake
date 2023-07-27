@@ -133,13 +133,14 @@ class Cake(models.Model):
         verbose_name = 'Торт'
         verbose_name_plural = 'Торты'
 
+
 class AdvetisementUrl(models.Model):
     title = models.CharField(
         'Название',
         max_length=50,
     )
     link = models.CharField(
-        'Адрес',
+        'Ссылка',
         max_length=20,
     )
 
@@ -150,3 +151,24 @@ class AdvetisementUrl(models.Model):
     def __str__(self) -> str:
         return self.title
     
+
+class AdvetisementUrlCount(models.Model):
+    link = models.ForeignKey(
+        AdvetisementUrl,
+        on_delete=models.CASCADE,
+        related_name='url',
+        verbose_name='Ссылка',
+    )
+    date = models.DateField(
+        'Дата',        
+    )
+    total_clicks = models.IntegerField(
+        'Количество',
+    )
+
+    class Meta:
+        verbose_name = 'Количество просмотров'
+        verbose_name_plural = 'Количество просмотров'
+
+    def __str__(self) -> str:
+        return self.link
