@@ -178,6 +178,8 @@
 		</article>
 
 		<article id="VueApp">
+			<form method="POST" action="/order_cake/" >
+			{% csrf_token %}
 			<section class="row pt-header" id="step3">
 				<h2 class="font_Gogh fs_40 cake_blue text-center">Создать свой торт</h2>
 				<v-form :validation-schema="schema1" @submit="ToStep4">
@@ -273,45 +275,45 @@
 
 			<section class="row pt-header" id="step4" v-if="Designed">
 				<form class="d-none">
-					<input v-model="Levels" value="1" type="radio" name="LEVELS">
-					<input v-model="Levels" value="2" type="radio" name="LEVELS">
-					<input v-model="Levels" value="3" type="radio" name="LEVELS">
+					<input v-model="Levels" value="1" type="radio" name="LEVELS" style="display: none;">
+					<input v-model="Levels" value="2" type="radio" name="LEVELS" style="display: none;">
+					<input v-model="Levels" value="3" type="radio" name="LEVELS" style="display: none;">
 					<br>
-					<input v-model="Form" value="1" type="radio" name="FORM">
-					<input v-model="Form" value="2" type="radio" name="FORM">
-					<input v-model="Form" value="3" type="radio" name="FORM">
+					<input v-model="Form" value="1" type="radio" name="FORM" style="display: none;">
+					<input v-model="Form" value="2" type="radio" name="FORM" style="display: none;">
+					<input v-model="Form" value="3" type="radio" name="FORM" style="display: none;">
 					<br>
-					<input v-model="Topping" value="1" type="radio" name="TOPPING">
-					<input v-model="Topping" value="2" type="radio" name="TOPPING">
-					<input v-model="Topping" value="3" type="radio" name="TOPPING">
-					<input v-model="Topping" value="4" type="radio" name="TOPPING">
-					<input v-model="Topping" value="5" type="radio" name="TOPPING">
-					<input v-model="Topping" value="6" type="radio" name="TOPPING">
-					<input v-model="Topping" value="7" type="radio" name="TOPPING">
+					<input v-model="Topping" value="1" type="radio" name="TOPPING" style="display: none;">
+					<input v-model="Topping" value="2" type="radio" name="TOPPING" style="display: none;">
+					<input v-model="Topping" value="3" type="radio" name="TOPPING" style="display: none;">
+					<input v-model="Topping" value="4" type="radio" name="TOPPING" style="display: none;">
+					<input v-model="Topping" value="5" type="radio" name="TOPPING" style="display: none;">
+					<input v-model="Topping" value="6" type="radio" name="TOPPING" style="display: none;">
+					<input v-model="Topping" value="7" type="radio" name="TOPPING" style="display: none;">
 					<br>
-					<input v-model="Berries" value="1" type="radio" name="BERRIES">
-					<input v-model="Berries" value="2" type="radio" name="BERRIES">
-					<input v-model="Berries" value="3" type="radio" name="BERRIES">
-					<input v-model="Berries" value="4" type="radio" name="BERRIES">
+					<input v-model="Berries" value="1" type="radio" name="BERRIES" style="display: none;">
+					<input v-model="Berries" value="2" type="radio" name="BERRIES" style="display: none;">
+					<input v-model="Berries" value="3" type="radio" name="BERRIES" style="display: none;">
+					<input v-model="Berries" value="4" type="radio" name="BERRIES" style="display: none;">
 					<br>
-					<input v-model="Decor" value="1" type="radio" name="DECOR">
-					<input v-model="Decor" value="2" type="radio" name="DECOR">
-					<input v-model="Decor" value="3" type="radio" name="DECOR">
-					<input v-model="Decor" value="4" type="radio" name="DECOR">
-					<input v-model="Decor" value="5" type="radio" name="DECOR">
-					<input v-model="Decor" value="6" type="radio" name="DECOR">
+					<input v-model="Decor" value="1" type="radio" name="DECOR" style="display: none;">
+					<input v-model="Decor" value="2" type="radio" name="DECOR" style="display: none;">
+					<input v-model="Decor" value="3" type="radio" name="DECOR" style="display: none;">
+					<input v-model="Decor" value="4" type="radio" name="DECOR" style="display: none;">
+					<input v-model="Decor" value="5" type="radio" name="DECOR" style="display: none;">
+					<input v-model="Decor" value="6" type="radio" name="DECOR" style="display: none;">
 					<br>
-					<input v-model="Words" type="text" name="WORDS">
-					<input v-model="Comments" type="text" name="COMMENTS">
+					<input v-model="Words" type="text" name="WORDS" style="display: none;">
+					<input v-model="Comments" type="text" name="COMMENTS" style="display: none;">
 
-					<input v-model="Name" type="text" name="NAME">
-					<input v-model="Phone" type="tel" name="PHONE">
-					<input v-model="Email" type="email" name="EMAIL">
-					<input v-model="Address" type="text" name="ADDRESS">
-					<input v-model="Dates" type="date" name="DATE">
-					<input v-model="Time" type="time" name="TIME">
-					<input v-model="DelivComments" type="text" name="DELIVCOMMENTS">
-					<button type="submit" ref="HiddenFormSubmit">Submit Order</button>
+					<input v-model="Name" type="text" name="NAME" style="display: none;">
+					<input v-model="Phone" type="tel" name="PHONE" style="display: none;">
+					<input v-model="Email" type="email" name="EMAIL" style="display: none;">
+					<input v-model="Address" type="text" name="ADDRESS" style="display: none;">
+					<input v-model="Dates" type="date" name="DATE" style="display: none;">
+					<input v-model="Time" type="time" name="TIME" style="display: none;">
+					<input v-model="DelivComments" type="text" name="DELIVCOMMENTS" style="display: none;">
+					<button type="submit" ref="HiddenFormSubmit" style="display: none;">Submit Order </button>
 				</form>
 				<v-form :validation-schema="schema2" @submit="this.$refs.HiddenFormSubmit.click()">
 					<div class="col">
