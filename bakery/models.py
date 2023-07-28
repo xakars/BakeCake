@@ -182,7 +182,8 @@ class AdvetisementUrlCount(models.Model):
         verbose_name='Ссылка',
     )
     date = models.DateField(
-        'Дата',        
+        'Дата',
+              
     )
     total_clicks = models.IntegerField(
         'Количество',
@@ -190,12 +191,7 @@ class AdvetisementUrlCount(models.Model):
 
     class Meta:
         verbose_name = 'Количество просмотров'
-        verbose_name_plural = 'Количество просмотров'
-
-    def __str__(self) -> str:
-        return self.link
-    def __str__(self):
-        return f'Торт: уровнь - {self.level}, форма - {self.shape}'
+        verbose_name_plural = 'Количество просмотров'     
 
 
 class Order(models.Model):
