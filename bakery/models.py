@@ -34,9 +34,10 @@ class CakeLevel(models.Model):
     price = models.IntegerField(
         verbose_name='Стоимость'
     )
+
     class Meta:
-        verbose_name='Уровень торта'
-        verbose_name_plural='Уровни торта'
+        verbose_name = 'Уровень торта'
+        verbose_name_plural = 'Уровни торта'
 
     def __str__(self):
         return str(self.level)
@@ -156,6 +157,11 @@ class Cake(models.Model):
         max_length=50,
         blank=True,
     )
+    image = models.CharField(
+        'Путь к изображению торта',
+        max_length=50,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'Торт'
@@ -163,6 +169,14 @@ class Cake(models.Model):
 
     def __str__(self):
         return self.cake_name
+
+    def total_price(self):
+        total = self.level.price + self.shape.price + self.topping.price
+        if self.berry:
+            total += self.berry.price
+        if self.decor:
+            total += self.decor.price
+        return total
 
 
 class Order(models.Model):
