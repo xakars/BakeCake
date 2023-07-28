@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import User, Cake, CakeLevel, CakeShape, CakeTopping, CakeBerry, CakeDecor
+from .models import User, Order, Cake, CakeLevel, CakeShape, CakeTopping, CakeBerry, CakeDecor
+
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -9,10 +10,23 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Cake)
 class CakeAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'topping', 'berry', 'decor', 'cake_text')
+    list_display = ('cake_name', 'topping', 'berry', 'decor', 'cake_text')
 
 
-@admin.register(CakeLevel, CakeShape,  CakeTopping, CakeBerry, CakeDecor)
+@admin.register(CakeLevel, CakeShape, CakeTopping, CakeBerry, CakeDecor)
 class CakePartsAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'price')
     list_editable = ['price']
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = (
+    'status', 'customer', 'cake', 'price', 'registrated_at', 'delivery_address', 'delivery_date', 'delivery_time')
+    search_fields = ('status', 'customer__name', 'cake__cake_name')
+    readonly_fields = ('cake_details',)
+
+    def cake_details(self, obj):
+        return f'Уровни: {obj.cake.level}, Форма: {obj.cake.shape}, Топпинг: {obj.cake.topping}, Ягоды: {obj.cake.berry}, Декор: {obj.cake.decor}, Надпись: {obj.cake.cake_text}'
+
+    cake_details.short_description = 'Детали заказанного торта'

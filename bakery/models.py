@@ -34,12 +34,13 @@ class CakeLevel(models.Model):
     price = models.IntegerField(
         verbose_name='Стоимость'
     )
+
     class Meta:
-        verbose_name='Уровень торта'
-        verbose_name_plural='Уровни торта'
+        verbose_name = 'Уровень торта'
+        verbose_name_plural = 'Уровни торта'
 
     def __str__(self):
-        return self.level
+        return str(self.level)
 
 
 class CakeShape(models.Model):
@@ -91,6 +92,9 @@ class CakeBerry(models.Model):
         verbose_name = 'Ягода'
         verbose_name_plural = 'Ягоды'
 
+    def __str__(self):
+        return self.cake_berry
+
 
 class CakeDecor(models.Model):
     cake_decor = models.CharField(
@@ -110,6 +114,11 @@ class CakeDecor(models.Model):
 
 
 class Cake(models.Model):
+    cake_name = models.CharField(
+        'Название торта',
+        max_length=30,
+        default='Кастомный торт'
+    )
     level = models.ForeignKey(
         CakeLevel,
         verbose_name='Кол-во уровней торта',
@@ -127,8 +136,6 @@ class Cake(models.Model):
         verbose_name='Топпинг торта',
         on_delete=models.CASCADE,
         related_name='toppings',
-        blank=True,
-        null=True
     )
     berry = models.ForeignKey(
         CakeBerry,
@@ -150,13 +157,26 @@ class Cake(models.Model):
         max_length=50,
         blank=True,
     )
+    image = models.CharField(
+        'Путь к изображению торта',
+        max_length=50,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'Торт'
         verbose_name_plural = 'Торты'
 
     def __str__(self):
-        return f'Торт: уровнь - {self.level}, форма - {self.shape}'
+        return self.cake_name
+
+    def total_price(self):
+        total = self.level.price + self.shape.price + self.topping.price
+        if self.berry:
+            total += self.berry.price
+        if self.decor:
+            total += self.decor.price
+        return total
 
 
 class Order(models.Model):
@@ -175,7 +195,7 @@ class Order(models.Model):
     )
     customer = models.ForeignKey(
         User,
-        verbose_name='Заказчик',
+        verbose_name='Клиент',
         related_name='orders',
         on_delete=models.CASCADE
     )
@@ -189,17 +209,23 @@ class Order(models.Model):
         verbose_name='Стоимость',
     )
     registrated_at = models.DateTimeField(
-        verbose_name='дата регистрации заказа',
+        verbose_name='Дата регистрации заказа',
         auto_now_add=True,
         db_index=True,
     )
-    deliver_address = models.CharField(
+    delivery_address = models.CharField(
         'Адрес доставки',
         max_length=200,
         blank=True,
     )
-    delivery_date = models.DateTimeField(
-        'Доставить к',
+    delivery_date = models.DateField(
+        'Дата доставки',
+        blank=True,
+        null=True,
+        db_index=True
+    )
+    delivery_time = models.TimeField(
+        'Время доставки',
         blank=True,
         null=True,
         db_index=True
