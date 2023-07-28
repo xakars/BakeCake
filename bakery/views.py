@@ -116,7 +116,19 @@ def order_cake_from_catalogue(request):
 
 
 def view_index(request):
-    return render(request, template_name='index.html', context={})
+    levels = CakeLevel.objects.all()
+    shapes = CakeShape.objects.all()
+    toppings = CakeTopping.objects.all()
+    berries = CakeBerry.objects.all()
+    decors = CakeDecor.objects.all()
+    return render(request, template_name='index.html',
+                  context={
+                      'levels': levels,
+                      'shapes': shapes,
+                      'toppings': toppings,
+                      'berries': berries,
+                      'decors': decors
+                  })
 
 
 def view_lk(request):
