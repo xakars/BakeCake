@@ -114,7 +114,7 @@
 		</article>
 
 		<article id="VueApp">
-			<form method="POST" action="/order_cake/" >
+			<form method="POST" action="{% url 'bakery:checkout' %}" >
 			{% csrf_token %}
 			<section class="row pt-header" id="step3">
 				<h2 class="font_Gogh fs_40 cake_blue text-center">Создать свой торт</h2>

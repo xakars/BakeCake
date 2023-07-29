@@ -1,7 +1,39 @@
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
+from django.conf import settings
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from bakery.models import User, Order, Cake, CakeLevel, CakeShape, CakeTopping, CakeBerry, CakeDecor
+import stripe
+
+
+stripe.api_key=settings.STRIPE_SECRET_KEY
+
+def create_checkout_session(request):
+    YOUR_DOMAIN="http://127.0.0.1:8000/"
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'rub',
+                        'unit_amount': 100000, #TODO подтянуть цену последнего заказа
+                        'product_data': {
+                            'name': 'Торт', #TODO подтянуть имя торта??
+                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                        },
+                    },
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '/success',
+            cancel_url=YOUR_DOMAIN + '/cancel',
+        )
+    except Exception as e:
+        return str(e)
+    return redirect(checkout_session.url, code=303)
 
 
 def order_cake(request):
@@ -138,3 +170,10 @@ def view_lk(request):
 def view_cakes_from_catalogue(request):
     cakes = Cake.objects.exclude(cake_name='Кастомный торт')
     return render(request, template_name='cakes.html', context={'cakes': cakes})
+
+
+def success(request):
+    return render(request, template_name='success.html')
+
+def cancel(request):
+    return render(request, template_name='cancel.html')
