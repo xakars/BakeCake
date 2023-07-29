@@ -36,10 +36,11 @@ class Command(BaseCommand):
                     total_clicks = count_clicks(url.link, headers, period)
                     AdvetisementUrlCount.objects.create(
                         link=url,
-                        date=date.today(),                        
+                        date=date.today(),
                         total_clicks=total_clicks,
                     )
-                    print(f'Количество кликов по ссылке: {total_clicks}')
+                    print(
+                        f'Количество кликов по ссылке: {url.link}: {total_clicks}')
                 except requests.exceptions.HTTPError:
                     print('Введена неправильная сокращённая ссылка или неверный токен')
             else:
@@ -47,7 +48,6 @@ class Command(BaseCommand):
 
 
 def count_clicks(bitlink, headers, period):
-
     parsed_link = urlparse(bitlink)
     link = f'{parsed_link.netloc}{parsed_link.path}'
     url = f'{BASE_URL}bitlinks/{link}/clicks/summary'
@@ -57,15 +57,12 @@ def count_clicks(bitlink, headers, period):
     }
     response = requests.get(url, headers=headers, params=url_params)
     response.raise_for_status()
-
     return response.json()['total_clicks']
 
 
 def is_bitlink(url, headers):
-
     parsed_link = urlparse(url)
     link = f'{parsed_link.netloc}{parsed_link.path}'
     url_link = f'{BASE_URL}bitlinks/{link}'
     response = requests.get(url_link, headers=headers)
-
     return response.ok
