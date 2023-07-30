@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  django_gunicorn:
+    volumes:
+      - static:/app/collected_static
+      - static:/app/bundles
+      - mediafiles:/mediafiles
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      bash -c "python manage.py collectstatic --no-input
+      && gunicorn bake_cake.wsgi:application -b 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - static:/app/collected_static
+      - mediafiles:/mediafiles
+    ports:
+      - "8179:8179"
+    depends_on:
+      - django_gunicorn
+
+volumes:
+  static:
+  postgres_data:
+  mediafiles:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ubuntu/star-burger-products/media
