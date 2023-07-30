@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile_Django
     command: >
       bash -c "python manage.py collectstatic --no-input
-      && gunicorn star_burger.wsgi:application -b 0.0.0.0:8000"
+      && gunicorn bake_cake.wsgi:application -b 0.0.0.0:8000"
     ports:
       - "8000:8000"
     depends_on:
