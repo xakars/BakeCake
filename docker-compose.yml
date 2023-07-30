@@ -17,7 +17,7 @@ services:
       - .env
     build:
       context: .
-      dockerfile: Dockerfile_Django
+      dockerfile: Dockerfile
     command: >
       bash -c "python manage.py collectstatic --no-input
       && gunicorn bake_cake.wsgi:application -b 0.0.0.0:8000"
