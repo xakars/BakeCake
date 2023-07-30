@@ -179,6 +179,44 @@ class Cake(models.Model):
         return total
 
 
+class AdvetisementUrl(models.Model):
+    title = models.CharField(
+        'Название',
+        max_length=50,
+    )
+    link = models.CharField(
+        'Ссылка',
+        max_length=20,
+    )
+
+    class Meta:
+        verbose_name = 'Рекламная ссылка'
+        verbose_name_plural = 'Рекламные ссылки'
+
+    def __str__(self) -> str:
+        return self.title
+    
+
+class AdvetisementUrlCount(models.Model):
+    link = models.ForeignKey(
+        AdvetisementUrl,
+        on_delete=models.CASCADE,
+        related_name='url',
+        verbose_name='Ссылка',
+    )
+    date = models.DateField(
+        'Дата',
+              
+    )
+    total_clicks = models.IntegerField(
+        'Количество',
+    )
+
+    class Meta:
+        verbose_name = 'Количество просмотров'
+        verbose_name_plural = 'Количество просмотров'
+
+
 class Order(models.Model):
     STATUS_CHOICES = [
         ('OPEN', 'Необработанный'),
