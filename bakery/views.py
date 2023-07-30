@@ -8,32 +8,7 @@ import stripe
 
 
 stripe.api_key=settings.STRIPE_SECRET_KEY
-
-def create_checkout_session(request):
-    YOUR_DOMAIN="http://127.0.0.1:8000/"
-    try:
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[
-                {
-                    'price_data': {
-                        'currency': 'rub',
-                        'unit_amount': 100000, #TODO подтянуть цену последнего заказа
-                        'product_data': {
-                            'name': 'Торт', #TODO подтянуть имя торта??
-                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
-                        },
-                    },
-                    'quantity': 1,
-                },
-            ],
-            mode='payment',
-            success_url=YOUR_DOMAIN + '/success',
-            cancel_url=YOUR_DOMAIN + '/cancel',
-        )
-    except Exception as e:
-        return str(e)
-    return redirect(checkout_session.url, code=303)
+YOUR_DOMAIN="http://127.0.0.1:8000/"
 
 
 def order_cake(request):
@@ -99,7 +74,31 @@ def order_cake(request):
     except ValidationError as e:
         return JsonResponse({'errors': str(e)}, status=400)
 
-    return redirect('payment_page')
+
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'rub',
+                        'unit_amount': order_data.get('price') * 100,
+                        'product_data': {
+                            'name': 'Торт', #TODO подтянуть имя торта??
+                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                        },
+                    },
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '/success',
+            cancel_url=YOUR_DOMAIN + '/cancel',
+        )
+    except Exception as e:
+        return str(e)
+
+    return redirect(checkout_session.url, code=303)
 
 
 def order_cake_from_catalogue(request):
@@ -144,7 +143,31 @@ def order_cake_from_catalogue(request):
     except ValidationError as e:
         return JsonResponse({'errors': str(e)}, status=400)
 
-    return redirect('payment_page')
+
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'rub',
+                        'unit_amount': order_data.get('price') * 100,
+                        'product_data': {
+                            'name': cake_name
+                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                        },
+                    },
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=YOUR_DOMAIN + '/success',
+            cancel_url=YOUR_DOMAIN + '/cancel',
+        )
+    except Exception as e:
+        return str(e)
+
+    return redirect(checkout_session.url, code=303)
 
 
 def view_index(request):
