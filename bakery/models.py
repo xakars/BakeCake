@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+from django.utils import timezone
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MinValueValidator
@@ -153,10 +155,6 @@ class Cake(models.Model):
         blank=True,
         null=True
     )
-    cake_text = models.CharField(
-        max_length=50,
-        blank=True,
-    )
     image = models.CharField(
         'Путь к изображению торта',
         max_length=50,
@@ -254,23 +252,23 @@ class Order(models.Model):
     delivery_address = models.CharField(
         'Адрес доставки',
         max_length=200,
-        blank=True,
+        default='Москва, метро Китай-Город'
     )
     delivery_date = models.DateField(
         'Дата доставки',
-        blank=True,
-        null=True,
         db_index=True
     )
     delivery_time = models.TimeField(
         'Время доставки',
-        blank=True,
-        null=True,
         db_index=True
     )
     delivery_comments = models.TextField(
         verbose_name='Комментарий для курьера',
         blank=True
+    )
+    cake_text = models.CharField(
+        max_length=50,
+        blank=True,
     )
 
     class Meta:
@@ -279,3 +277,14 @@ class Order(models.Model):
 
     def __str__(self):
         return f'{self.cake} {self.customer.name}'
+
+    def total_order_price(self):
+        total_order_price = self.cake.total_price()
+
+        if self.cake_text:
+            total_order_price += 500
+
+        if self.delivery_date <= timezone.now().date() + timedelta(days=1):
+            total_order_price *= 1.20
+
+        return total_order_price
